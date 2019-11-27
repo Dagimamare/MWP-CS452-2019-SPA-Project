@@ -16,7 +16,7 @@ let frontPage = `<h1><b>Please login</b></h1>
 
 
     function forMySecondpage() {
-        //psot mete
+        //post mete
 
 
         myfirestPage.innerHTML = secondPage
