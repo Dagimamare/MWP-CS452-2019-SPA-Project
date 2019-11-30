@@ -1,5 +1,6 @@
 window.onload = function () {
-    let token,tid=0;
+    let token,long,lati,tid=0;
+   
     let frontPage = 
     `<h1><b>Please login</b></h1>
     User Name <input type="text" id="userName"><br>
@@ -7,7 +8,7 @@ window.onload = function () {
     <button type="button" id="lbut">Login</button>`;
 
     let secondPage = `
-     <div id="gioId"></div>
+     <Div id="gioId"></Div>
     <textarea id="anima" cols="80" rows="20"></textarea> 
     <button id="refid">Refresh Animation</button>
     <button id="getApi">LogOut</button>`
@@ -24,10 +25,11 @@ window.onload = function () {
     function forMySecondpage() {
 
         myfirestPage.innerHTML = secondPage;
-
-        seclogBuf();
+  
+        seclogBuf()
         refreshCl();
-        gioLocation()
+        toupdatelocation()
+        
 
     }
     function seclogBuf() {
@@ -74,7 +76,7 @@ window.onload = function () {
                     let count=0;               
                     tid=setInterval(function(){
                       document.getElementById("anima").innerHTML=aniData[count];
-                    count++;
+                    ++count;
                     if(count==aniData.length){
                         count=0}
                     },200)
@@ -85,35 +87,50 @@ window.onload = function () {
         }
 
 function gioLocation(){
-    fetch("http://www.mapquestapi.com/geocoding/v1/reverse?key=vhWCTTt1Zi5UypzejKx3B4rGTDLNxhkb&location=30.333472,-81.470448")
+    console.log(long)
+    console.log(lati)
+    fetch(`http://www.mapquestapi.com/geocoding/v1/reverse?key=vhWCTTt1Zi5UypzejKx3B4rGTDLNxhkb&location=${lati},${long}`)
     .then(res=>res.json())
     .then(data=>{ let location=data.results[0].locations[0];
-                 
-      
-     let gioDiv= document.getElementById("gioId");
-     gioDiv.innerHTML=`Well Come ${location.adminArea4} ,${location.adminArea3}, ${location.adminArea1}`
+               console.log(location)
+                           
+    let ividlocation=document.getElementById("gioId")
+    ividlocation.innerHTML=`<h3> Welcome all from ${location.adminArea5},${location.adminArea3},${location.adminArea1}!</h3>`
     });
 }
 
  function toupdatelocation(){
-    //let long=0;
-    //let lati=0;
+ 
+     navigator.geolocation.getCurrentPosition(success, fail);
+  
+   
+   
     function success(position) {
         long= position.coords.longitude ;
         lati= position.coords.latitude ;
-        console.log(long)
-        console.log(lati)
+        gioLocation();
 
         }
         function fail(msg) {
-        console.log(msg.code + msg.message); // Log the error
+        console.log(msg.code + msg.message); r
         }
-        navigator.geolocation.getCurrentPosition(success, fail);
-        
-
+        onpopstate = function() {
+            alert("location: " + document.location + ", state: " + JSON.stringify(event.state))
+          }
+          
+          history.pushState({page: 1}, "title 1", "?page=1")
+          history.pushState({page: 2}, "title 2", "?page=2")
+          history.replaceState({page: 3}, "title 3", "?page=3")
+          history.back() 
+          history.back() 
+          history.go(2)
+      
  }
-   toupdatelocation()
-    fetchatOne()
+ 
+   fetchatOne()
 
 
 }
+
+    
+ 
